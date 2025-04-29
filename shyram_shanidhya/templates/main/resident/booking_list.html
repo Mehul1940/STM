@@ -1,0 +1,63 @@
+{% extends 'main/base.html' %}
+{% block resident_content %}
+
+<div class="container py-4">
+    <h3 class="mb-3"><i class="bi bi-calendar-check"></i> My Bookings</h3>
+
+    <a href="{% url 'resident_book_facility' %}" class="btn btn-primary mb-3 w-100">
+        <i class="bi bi-calendar-plus"></i> Book a Facility
+    </a>
+
+    {% if bookings %}
+    <div class="row" style="margin-bottom:150px;">
+        {% for booking in bookings %}
+        <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card shadow-sm border-0">
+                {% if booking.facility.image %}
+                <img src="{{ booking.facility.image.url }}" class="card-img-top" alt="{{ booking.facility.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="fw-bold">{{ booking.facility.name }}</h5>
+                    <p class="text-muted"><i class="bi bi-calendar"></i> Date: {{ booking.date }}</p>
+                    <p><strong>Total Price:</strong> ₹{{ booking.total_price }}</p>
+
+                    <p>
+                        {% if booking.status == "processing" %}
+                        <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> Processing</span>
+                        <small class="d-block text-warning mt-1">Your payment is being verified.</small>
+                        {% elif booking.status == "approved" %}
+                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Approved</span>
+                        <small class="d-block text-success mt-1">Your booking is confirmed.</small>
+                        {% elif booking.status == "rejected" %}
+                        <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Rejected</span>
+                        <small class="d-block text-danger mt-1">Your payment was rejected. Please pay again.</small>
+                        {% else %}
+                        <span class="badge bg-secondary"><i class="bi bi-exclamation-circle"></i> Pending</span>
+                        <small class="d-block text-muted mt-1">Awaiting payment.</small>
+                        {% endif %}
+                    </p>
+
+                    {% if booking.payment_proof %}
+                    <a href="{{ booking.payment_proof.url }}" target="_blank" class="btn btn-info w-100">
+                        <i class="bi bi-receipt"></i> View Proof
+                    </a>
+                    {% else %}
+                    <p class="text-danger"><i class="bi bi-exclamation-circle"></i> Payment Pending</p>
+                    <a href="{% url 'resident_facility_payment' booking.id %}" class="btn btn-primary w-100">
+                        <i class="bi bi-cash"></i> Complete Booking
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center mt-5">
+        <i class="bi bi-calendar-x display-4 text-muted"></i>
+        <p class="text-muted mt-2">You haven't booked any facilities yet.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

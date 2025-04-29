@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+
+{% block resident_content %}
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 rounded-3 p-4">
+        {% if event.image %}
+        <img src="{{ event.image.url }}" class="img-fluid rounded mb-3" alt="{{ event.name }}">
+        {% endif %}
+        
+        <h3 class="fw-bold text-primary"><i class="bi bi-calendar-event"></i> {{ event.name }}</h3>
+        <p class="small text-muted"><i class="bi bi-calendar-check"></i> {{ event.event_date }}</p>
+
+        <p class="text-secondary">{{ event.description }}</p>
+
+        <div class="p-3 rounded bg-light">
+            <h5 class="fw-semibold text-success"><i class="bi bi-cash-stack"></i> ₹{{ event.total_fund_collected }} / ₹{{ event.total_fund_needed }}</h5>
+            <p class="text-danger small">Remaining: ₹{{ event.fund_remaining }}</p>
+        </div>
+
+        <div class="d-grid gap-2 mt-3">
+                {% if contribution %}
+                    {% if contribution.status == "verified" %}
+                        <p class="text-success fw-bold"><i class="bi bi-check-circle"></i> Thank you for contributing!</p>
+                    {% elif contribution.status == "processing" %}
+                        <p class="text-warning fw-bold"><i class="bi bi-hourglass-split"></i> Your contribution is being processed...</p>
+                    {% elif contribution.status == "rejected" %}
+                        <p class="text-danger fw-bold"><i class="bi bi-x-circle"></i> Your contribution was rejected. Please pay again.</p>
+                        <a href="{% url 'resident_event_contribute' event.id %}" class="btn btn-danger w-100">
+                            <i class="bi bi-arrow-clockwise"></i> Pay Again
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'resident_event_contribute' event.id %}" class="btn btn-primary w-100">
+                        <i class="bi bi-cash"></i> Contribute
+                    </a>
+                {% endif %}
+            <a href="{% url 'resident_event' %}" class="btn btn-outline-secondary" style="margin-bottom:150px;">
+                <i class="bi bi-arrow-left"></i> Back to Events
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

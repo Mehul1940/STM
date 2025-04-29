@@ -1,0 +1,58 @@
+// Colors
+$primary: #124046;
+$success: #2ec4b6;
+$warning: #ff9f1c;
+$danger: #e71d36;
+$info: #7209b7;
+$light: #f8f9fa;
+$dark: #212529;
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+// FONTS
+$font-family-base: "Poppins", sans-serif;
+
+// Spacing
+
+$custom-spacers: (
+  5: 32px,
+  6: 48px,
+  7: 64px,
+  8: 96px,
+);
+
+$spacers: map-merge($spacers, $custom-spacers);
+
+// INPUT
+
+$input-border-radius: 3px;
+$input-padding-y: 9px;
+$input-padding-x: 24px;
+
+$form-select-padding-y: 0.7rem;
+$form-select-padding-x: 1.2rem;
+$form-select-border-radius: 3px;
+
+// BUTTON
+$btn-padding-y: 9px;
+$btn-padding-x: 24px;
+$btn-border-radius: 3px;
+
+$border-radius: 0.5rem;
+$card-border-width: 0;
+$card-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$sidebar-width: 240px;
+
+$border-radius: 0.5rem;
+$card-border-width: 0;
+$card-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$sidebar-width: 240px;
+
+// TABLE
+$table-cell-padding-y: 14px;
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+@import "bootstrap/scss/bootstrap";

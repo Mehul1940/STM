@@ -1,0 +1,60 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+<div class="container py-4">
+    <h3 class="mb-3">Register a Complaint</h3>
+
+    <!-- Steps Guide -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">How to Submit a Complaint?</div>
+        <div class="card-body">
+            <ol>
+                <li>Fill in the complaint details below.</li>
+                <li>Attach an image if necessary.</li>
+                <li>Click on the <strong>Submit Complaint</strong> button.</li>
+                <li>Your complaint will be reviewed by the management.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Complaint Form -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">Complaint Details</div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label">Complaint Title</label>
+                    <input type="text" class="form-control" name="complaint_title" placeholder="Enter a short title" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" name="category" required>
+                        <option value="" selected disabled>Select a category</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="security">Security</option>
+                        <option value="water_supply">Water Supply</option>
+                        <option value="electricity">Electricity</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Complaint Description</label>
+                    <textarea class="form-control" name="complaint_description" rows="4" placeholder="Describe your issue" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Attach an Image (Optional)</label>
+                    <input type="file" class="form-control" name="complaint_image">
+                </div>
+
+                <button type="submit" class="btn btn-danger w-100">Submit Complaint</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

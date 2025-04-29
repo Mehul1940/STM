@@ -1,0 +1,40 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="w-100 d-flex justify-content-center align-items-center min-vh-100">
+  <div class="row w-100 shadow-lg overflow-hidden">
+    
+    <!-- Hero Section -->
+    <div class="col-md-6 d-none d-md-block position-relative p-0" 
+         style="background: url({% static 'images/auth-hero.jpeg' %}) no-repeat center center/cover;">
+      <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white text-center" 
+           style="background: rgba(0, 0, 0, 0.5);">
+        <h1 class="fs-2 fw-bold">See you soon!</h1>
+        <p class="fs-5">You have been logged out successfully.</p>
+      </div>
+    </div>
+
+    <!-- Logout Confirmation -->
+    <div class="col-md-6 bg-white px-4 py-5 d-flex flex-column justify-content-center align-items-center min-vh-100">
+      <div class="w-100" style="max-width: 450px; width: 90%; min-width: 280px;">
+        <h1 class="text-uppercase text-primary fs-3 fw-semibold text-center">Shyam Sanidhya</h1>
+        <p class="text-center mt-3">Are you sure you want to log out?</p>
+        
+        <form method="post" action="{% url 'account_logout' %}" class="text-center mt-4">
+          {% csrf_token %}
+          <button class="btn btn-danger w-100 text-white" type="submit">Logout</button>
+        </form>
+
+        <p class="text-center m-0 pt-3">
+          <a href="{% url 'dashboard' %}" class="text-primary link-underline link-underline-opacity-0">
+            Return to Home
+          </a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,62 @@
+{% extends "main/base.html" %}
+
+{% block staff_content %}
+
+<h5 class="text-white text-body rounded-sm mb-3">Current Visitors</h5>
+
+
+{% for visitor in visitors  %}
+    <div class="card shadow-sm border-0 rounded-3 p-3 mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <span class="fw-semibold text-primary">
+            {% if visitor.visitor_type == "guest" %}
+                <i class="bi bi-person-check-fill"></i> Guest
+            {% elif visitor.visitor_type == "delivery" %}
+                <i class="bi bi-box-seam-fill"></i> Delivery
+            {% elif visitor.visitor_type == "service" %}
+                <i class="bi bi-tools"></i> Service Provider
+            {% else %}
+                <i class="bi bi-person-fill"></i> Other
+            {% endif %}
+        </span>
+        <span class="text-muted small"><i class="bi bi-clock"></i> {{ visitor.check_in_time|date:"Y-m-d h:i A" }}</span>
+    </div>
+    <h5 class="mt-2 fw-bold">{{ visitor.name }}</h5>
+    <p class="mb-1 text-secondary"><strong><i class="bi bi-telephone me-1"></i> Contact:</strong> {{ visitor.contact_number }}</p>
+    <p class="mb-1 text-secondary"><strong><i class="bi bi-house-door-fill me-1"></i> Flat/Unit:</strong> {{ visitor.visiting_flat }}</p>
+    <p class="mb-1 text-secondary"><strong><i class="bi bi-list-check me-1"></i> Purpose:</strong> {{ visitor.purpose }}</p>
+
+    {% if visitor.vehicle_type != "on_foot" %}
+        <p class="mb-2 text-secondary">
+            <strong>
+                {% if visitor.vehicle_type == "bike" %}
+                    <i class="bi bi-bicycle"></i> Bike:
+                {% elif visitor.vehicle_type == "car" %}
+                    <i class="bi bi-car-front-fill"></i> Car:
+                {% endif %}
+            </strong>
+            {{ visitor.vehicle_number }}
+        </p>
+    {% else %}
+        <p class="mb-2 text-secondary">
+            <strong><i class="bi bi-person-walking"></i> On Foot</strong>
+        </p>
+    {% endif %}
+    
+    <div class="d-flex gap-2 mt-2">          
+        {% if not visitor.check_out_time %}
+            <form method="POST" action="{% url 'mark_out' visitor.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger rounded-pill px-3 w-100               ">
+                    <i class="bi bi-box-arrow-right"></i> Mark Out
+                </button>
+            </form>
+        {% else %}
+            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Checked Out</span>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<p class="text-center text-muted">No current visitors found.</p>
+{% endfor %}
+{% endblock staff_content %}

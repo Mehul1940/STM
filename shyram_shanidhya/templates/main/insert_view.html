@@ -1,0 +1,24 @@
+
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container py-5 bg-white shadow-sm py-5 rounded">
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <h3 class="my-4">Add New {{extra.title}}</h3>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {{form|crispy}}
+                
+                <div class="d-flex justify-content-end">
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary me-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Add {{extra.title}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

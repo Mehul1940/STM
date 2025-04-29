@@ -1,0 +1,84 @@
+{% extends "main/base.html" %}
+
+{% block staff_content %}
+
+<h5 class="text-white text-body rounded-sm mb-3">Visitor Logs</h5>
+
+{% for visitor in object_list %}
+<div class="card shadow-sm border-0 rounded-3 p-3 mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <span class="fw-semibold text-primary">
+            <i class="bi bi-person-fill"></i> Visitor
+        </span>
+        <span class="text-muted small">
+            <i class="bi bi-clock"></i> {{ visitor.check_in_time|date:"Y-m-d h:i A" }}
+        </span>
+    </div>
+    <h5 class="mt-2 fw-bold">{{ visitor.name }}</h5>
+    <p class="mb-1 text-secondary">
+        <strong><i class="bi bi-house-door-fill me-1"></i> Flat/Unit:</strong> {{ visitor.visiting_flat }}
+    </p>
+    <p class="mb-1 text-secondary">
+        <strong><i class="bi bi-list-check me-1"></i> Purpose:</strong> {{ visitor.purpose }}
+    </p>
+    <p class="mb-2 text-secondary">
+        <strong>
+            <i class="{% if visitor.vehicle_type == 'car' %}bi bi-car-front-fill
+                      {% elif visitor.vehicle_type == 'bike' %}bi bi-bicycle
+                      {% else %}bi bi-person-walking{% endif %} me-1"></i>
+            Vehicle:
+        </strong>
+        {% if visitor.vehicle_number %}
+            {{ visitor.vehicle_type|title }} - {{ visitor.vehicle_number }}
+        {% else %}
+            On Foot
+        {% endif %}
+    </p>
+</div>
+{% empty %}
+<p class="text-center text-muted">No visitors found.</p>
+{% endfor %}
+
+
+{% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-end mb-0">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" aria-label="Previous">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+            {% endif %}
+            
+            {% for num in paginator.page_range %}
+                <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" aria-label="Next">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+
+
+{% endblock staff_content %}

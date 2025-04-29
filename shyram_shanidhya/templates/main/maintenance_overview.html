@@ -1,0 +1,88 @@
+{% extends "main/base.html" %}
+{% load get_attr %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center px-3">
+                <h5 class="mb-0 fw-bold">Maintenance Overview</h5>
+
+                <form method="GET" class="d-flex">
+                    <select name="month" class="form-select me-2">
+                        {% for value, name in months %}
+                            <option value="{{ value }}" {% if value == selected_month %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="year" class="form-select me-2">
+                        {% for year in years %}
+                            <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                {% if maintenance_records %}
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Resident</th>
+                            <th>Room No.</th>
+                            <th>Amount (₹)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in maintenance_records %}
+                            <tr>
+                                <td>{{ record.user.username }}</td>
+                                <td>{{ record.user.room }}</td>
+                                <td>₹{{ record.amount }}</td>
+                                <td>
+                                    {% if record.status == "pending" %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% elif record.status == "processing" %}
+                                        <span class="badge bg-info text-white">Processing</span>
+                                    {% elif record.status == "verified" %}
+                                        <span class="badge bg-success text-white">Verified</span>
+                                    {% elif record.status == "approved" %}
+                                        <span class="badge bg-success text-white">Approved</span>
+                                    {% elif record.status == "rejected" %}
+                                        <span class="badge bg-danger text-white">Rejected</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary text-white">{{ record.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'maintenance_detail' record.id %}" class="btn btn-sm btn-outline-primary">
+                                        View Detail &nbsp;<i class="bi bi-arrow-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <div class="text-center">
+                        <form method="POST" class="d-flex justify-content-center">
+                            {% csrf_token %}
+                            <div style="width:300px">
+                                {{ form|crispy }}
+                                <button type="submit" class="btn btn-primary mb-5">Generate for All Residents</button>
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

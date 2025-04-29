@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+<div class="container py-4">
+    <h3 class="mb-3">Pay Monthly Maintenance</h3>
+
+    <!-- Steps Guide -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">How to Pay?</div>
+        <div class="card-body">
+            <ol>
+                <li>Click on the <strong>Pay Now</strong> button below.</li>
+                <li>It will open Google Pay with the payment details.</li>
+                <li>Complete the payment and take a screenshot of the transaction.</li>
+                <li>Upload the screenshot in the form below and submit.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Payment Details -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">Payment Details</div>
+        <div class="card-body">
+            <p>Your Due Amount: <strong>₹{{ maintenance_due }}</strong></p>
+            <p>Pay to: <strong>+91 XXXXXXXXXX</strong> (Society Account)</p>
+            <a class="btn btn-success w-100" target="_blank" 
+               href="https://pay.google.com/gp/w/u/0/home/paymentrequest?pa={{ upi_id }}&pn=Society&mc=1234&tid=unique_txn_id&tr=123456789&tn=Maintenance Payment&am={{ maintenance_due }}&cu=INR">
+               Pay Now via Google Pay
+            </a>
+        </div>
+    </div>
+
+    <!-- Upload Screenshot -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-warning text-white">Upload Payment Screenshot</div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Upload Screenshot</label>
+                    <input type="file" class="form-control" name="payment_screenshot" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Transaction ID</label>
+                    <input type="text" class="form-control" name="transaction_id" placeholder="Enter Transaction ID" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Submit Payment</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

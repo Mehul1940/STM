@@ -1,0 +1,39 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <div class="card shadow-sm border-0 rounded-3 p-3">
+        <h3 class="mb-3 text-primary"><i class="bi bi-exclamation-triangle"></i> Complaint Detail</h3>
+        <h5 class="fw-bold">{{ complaint.title }}</h5>
+        <p class="text-muted"><i class="bi bi-calendar"></i> Filed on: {{ complaint.submitted_at|date:"F d, Y" }}</p>
+        <p><strong>Description:</strong> {{ complaint.description }}</p>
+        <p>
+            <strong>Status:</strong> 
+            <span class="badge 
+                {% if complaint.status == 'pending' %} bg-warning 
+                {% elif complaint.status == 'in_progress' %} bg-info 
+                {% elif complaint.status == 'resolved' %} bg-success 
+                {% endif %}">
+                {{ complaint.status }}
+            </span>
+        </p>
+
+        {% if complaint.remark %}
+        <div class="alert alert-success">
+            <strong>Admin Remark:</strong> {{ complaint.remark }}
+            <p class="small text-muted"><i class="bi bi-clock"></i> Resolved on: {{ complaint.resolved_at|date:"F d, Y" }}</p>
+        </div>
+        {% endif %}
+
+        {% if complaint.status != 'resolved' %}
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+                {{form|crispy}}
+            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Mark as Resolved</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

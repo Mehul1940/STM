@@ -1,0 +1,95 @@
+{% extends "main/base.html" %}
+
+{% block resident_content %}
+
+<div class="container mt-4">
+    <h3 class="mb-3 text-primary"><i class="bi bi-house-door-fill"></i> Society Dashboard</h3>
+
+    <!-- Room Details -->
+    <div class="card shadow-sm border-0 rounded-3 p-3 mb-4">
+        <h5 class="fw-bold text-secondary"><i class="bi bi-door-open-fill"></i> My Room Details</h5>
+        {% if user.room %}
+            <p><strong>Block:</strong> {{ user.room.block }}</p>
+            <p><strong>Room Number:</strong> {{ user.room.room_number }}</p>
+            <p><strong>Room Type:</strong> {{ user.room.get_room_type_display }}</p>
+        {% else %}
+            <p class="text-muted">You are not assigned to any room.</p>
+        {% endif %}
+    </div>
+
+    <!-- Notices Section -->
+    <div class="card shadow-sm border-0 rounded-3 p-3 mb-4">
+        <h5 class="fw-bold text-secondary"><i class="bi bi-megaphone-fill"></i> Latest Notices</h5>
+        <ul class="list-group list-group-flush">
+            {% for notice in notices %}
+                <li class="list-group-item">
+                    <h6 class="fw-bold">{{ notice.title }}</h6>
+                    <p class="mb-1 small text-muted">
+                        <i class="bi bi-calendar"></i> Posted on: {{ notice.created_at|date:"F d, Y" }}
+                        {% if notice.expiry_date %} | <i class="bi bi-clock"></i> Expires: {{ notice.expiry_date|date:"F d, Y" }}{% endif %}
+                    </p>
+                    <p>{{ notice.description }}</p>
+                    <span class="badge 
+                        {% if notice.notice_type == 'general' %} bg-primary 
+                        {% elif notice.notice_type == 'maintenance' %} bg-warning text-dark
+                        {% elif notice.notice_type == 'event' %} bg-success 
+                        {% elif notice.notice_type == 'security' %} bg-danger 
+                        {% endif %}"> 
+                        {{ notice.get_notice_type_display }}
+                    </span>
+                </li>
+            {% empty %}
+                <li class="list-group-item text-muted text-center">No notices available</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Maintenance Section -->
+    <div class="card shadow-sm border-0 rounded-3 p-3" style="margin-bottom:150px;">
+        <h5 class="fw-bold text-secondary"><i class="bi bi-tools"></i> Maintenance</h5>
+        <ul class="list-group list-group-flush" >
+            {% if maintenance %}
+                <li class="list-group-item">
+                    <div class="d-flex flex-column gap-2">
+                        <div>
+                            <p class="mb-1"><strong>Year:</strong> {{ maintenance.year }}</p>
+                            <p class="mb-1"><strong>Month:</strong> {{ maintenance.month }}</p>
+                            <p class="mb-1"><strong>Amount:</strong> ₹{{ maintenance.amount }}</p>
+                        </div>
+                        <div>
+                            {% if maintenance.status == "verified" %}
+                                <span class="badge bg-success"><i class="bi bi-check-circle"></i> Completed</span>
+                                <p class="text-success fw-bold mt-2"><i class="bi bi-check-circle"></i> Your maintenance payment is verified. Thank you!</p>
+                            {% elif maintenance.status == "rejected" %}
+                                <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Rejected</span>
+                                <p class="text-danger fw-bold mt-2"><i class="bi bi-x-circle"></i> Your payment was rejected. Please try again.</p>
+                            {% elif maintenance.payment_proof %}
+                                <span class="badge bg-warning text-dark"><i class="bi bi-clock"></i> Processing</span>
+                                <p class="text-warning fw-bold mt-2"><i class="bi bi-hourglass-split"></i> Your maintenance payment is being processed...</p>
+                            {% else %}
+                                <span class="badge bg-secondary"><i class="bi bi-hourglass-split"></i> Pending</span>
+                                <p class="text-muted fw-bold mt-2"><i class="bi bi-exclamation-circle"></i> You haven't paid for this month yet.</p>
+                            {% endif %}
+                        </div>
+                        <div class="d-grid">
+                            {% if maintenance.status == "pending" %}
+                                <a href="{% url 'resident_maintenance' maintenance.id %}" class="btn btn-primary">
+                                    <i class="bi bi-wallet"></i> Pay Now
+                                </a>
+                            {% elif maintenance.status == "rejected" %}
+                                <a href="{% url 'resident_maintenance' maintenance.id %}" class="btn btn-danger">
+                                    <i class="bi bi-arrow-clockwise"></i> Pay Again
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% else %}
+                <li class="list-group-item text-muted text-center">No maintenance records found</li>
+            {% endif %}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock resident_content %}

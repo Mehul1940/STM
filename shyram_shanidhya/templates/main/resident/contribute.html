@@ -1,0 +1,50 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block resident_content %}
+<div class="container py-4">
+    <h3 class="mb-3 text-primary"><i class="bi bi-cash-stack"></i> Contribute to Event Fund</h3>
+
+    <!-- Steps Guide -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">How to Contribute?</div>
+        <div class="card-body">
+            <ol>
+                <li>Click on <strong>Contribute Now</strong> to make a payment.</li>
+                <li>Take a screenshot of the transaction.</li>
+                <li>Upload the screenshot and enter transaction details below.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Contribution Details -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">Contribution Details</div>
+        <div class="card-body">
+            <p><strong>Pay to:</strong> <span class="text-success">+91 XXXXXXXXXX</span></p>
+            
+            <a class="btn btn-success w-100" target="_blank"
+               href="upi://pay?pa=omk.rahi-1@oksbi&pn=Omkar&cu=INR">
+                <i class="bi bi-credit-card"></i> Contribute Now via UPI
+            </a>
+        </div>
+    </div>
+
+    <!-- Contribution Form -->
+    <div class="card shadow-sm" style="margin-bottom:150px">
+        <div class="card-header bg-warning text-white">Upload Payment Proof</div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Render Form with Crispy Forms -->
+                {{ form|crispy }}
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-send"></i> Submit Contribution
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock resident_content %}

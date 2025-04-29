@@ -1,0 +1,41 @@
+{% extends "account/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="w-100 d-flex justify-content-center align-items-center min-vh-100">
+  <div class="row w-100 shadow-lg overflow-hidden">
+    
+    <div class="col-md-6 d-none d-md-block position-relative p-0" 
+         style="background: url({% static 'images/auth-hero.jpeg' %}) no-repeat center center/cover;">
+      <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white text-center" 
+           style="background: rgba(0, 0, 0, 0.5);">
+        <h1 class="fs-2 fw-bold">Welcome to Shyam Sanidhya</h1>
+        <p class="fs-5">Manage your society efficiently with ease and security.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 bg-white px-4 py-5 d-flex flex-column justify-content-center align-items-center min-vh-100">
+      <div class="w-100" style="max-width: 450px; width: 90%; min-width: 280px;">
+        <h1 class="text-uppercase text-primary fs-3 fw-semibold text-center">Confirm Your Email</h1>
+
+        {% if confirmation %}
+          {% if confirmation.key_valid %}
+            <p class="text-center text-muted">Thank you for confirming your email! Your account is now active.</p>
+            <a href="{% url 'account_login' %}" class="btn btn-primary w-100 mt-2">Go to Login</a>
+          {% else %}
+            <p class="text-center text-danger">This confirmation link is invalid or has already been used.</p>
+            <a href="{% url 'account_email' %}" class="btn btn-outline-primary w-100 mt-2">Resend Confirmation Email</a>
+          {% endif %}
+        {% else %}
+          <p class="text-center text-muted">This email confirmation link is invalid.</p>
+        {% endif %}
+        
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}
+``

@@ -1,0 +1,169 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shyam Sanidhya Society</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'index.css' %}" />
+  </head>
+  <body class="bg-light">
+
+    {% if request.user.is_superuser %}
+           <div class="container-fluid overflow-hidden" style="height:100vh;">
+          <div class="row">
+              <div class="col-md-3 col-xxl-2 bg-light p-0 d-flex flex-column vh-100 bg-white border-end">
+                  <div class="p-3 d-flex justify-content-center border-bottom">
+                      <img src="{% static 'images/logo.png' %}" alt="Logo" width="120">
+                    </div>
+                    <div class="list-group list-group-flush flex-grow-1 mt-4">
+                        <a href="{% url 'dashboard' %}" class="list-group-item py-3 list-group-item-action {% if request.path == '/' %}active{% endif %}">
+                            <i class="bi bi-speedometer2 me-2"></i> Home
+                        </a>
+                        <a href="{% url 'room_list' %}" class="list-group-item py-3 list-group-item-action {% if '/rooms' in request.path %}active{% endif %}">
+                            <i class="bi bi-building me-2"></i> Rooms
+                        </a>
+                        <a href="{% url 'notice_list' %}" class="list-group-item py-3 list-group-item-action {% if '/notices' in request.path %}active{% endif %}">
+                            <i class="bi bi-bell me-2"></i> Notices
+                        </a>
+                              <a href="{% url 'facility_list' %}" class="list-group-item py-3 list-group-item-action {% if '/facility' in request.path %}active{% endif %}">
+                            <i class="bi bi-building me-2"></i> Facility
+                        </a>
+                        <a href="{% url 'event_list' %}" class="list-group-item py-3 list-group-item-action {% if '/events' in request.path %}active{% endif %}">
+                            <i class="bi bi-calendar4-event me-2"></i> Events
+                        </a>
+                        <a href="{% url 'contribution_list' %}" class="list-group-item py-3 list-group-item-action {% if '/contribution' in request.path %}active{% endif %}">
+                            <i class="bi bi-cash me-2"></i> Contribution
+                        </a>
+                        <a href="{% url 'booking_list' %}" class="list-group-item py-3 list-group-item-action {% if '/bookings' in request.path %}active{% endif %}">
+                            <i class="bi bi-calendar-date me-2"></i> Bookings
+                        </a>
+                        <a href="{% url 'maintenance_overview' %}" class="list-group-item py-3 list-group-item-action {% if '/maintenance' in request.path %}active{% endif %}">
+                            <i class="bi bi-wrench me-2"></i> Maintenance
+                        </a>
+                        <a href="{% url 'finance_overview' %}" class="list-group-item py-3 list-group-item-action {% if '/finance' in request.path %}active{% endif %}">
+                            <i class="bi bi-wallet2 me-2"></i> Finance
+                        </a>
+                        <a href="{% url 'user_list' %}" class="list-group-item py-3 list-group-item-action {% if '/users' in request.path %}active{% endif %}">
+                            <i class="bi bi-person-gear me-2"></i> Users
+                        </a>
+               
+                        <a href="{% url 'complaint_list' %}" class="list-group-item py-3 list-group-item-action {% if '/complaints' in request.path %}active{% endif %}">
+                            <i class="bi bi-chat-left-text me-2"></i> Complaints
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-md-9 col-xxl-10 p-4 overflow-y-auto" style="height:100vh;">
+                    <div class="container d-flex justify-content-between align-items-center mb-4">
+                        <div class="input-group w-25">
+                            <h2>Dashboard</h2>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="dropdown">
+                                <button class="btn btn-light d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                                    <div class="avatar me-2">
+                                        <img src="{% static 'images/user.png' %}" class="rounded-circle" alt="User" width="30">
+                                    </div>
+                                <span>{{request.user.Fullname}}</span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{% url 'account_change_password' %}"><i class="bi bi-key"></i> Change Password</a></li>
+                                <li><a class="dropdown-item text-danger" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                    {% block content %}{% endblock content %}
+            </div>
+
+        </div>
+    </div>
+    {% elif request.user.is_staff %}
+
+        <div class="d-lg-none">
+            <h1 class="bg-white shadow-sm text-uppercase text-primary fs-3 fw-semibold p-3">Shyam Sanidhya</h1>
+            <div class="px-4 pt-3">
+                {% block staff_content %}{% endblock staff_content %}
+            </div>
+        </div>
+
+        <nav class="navbar fixed-bottom bg-white shadow-lg d-lg-none">
+            <div class="container d-flex justify-content-around py-2">
+                <a href="{% url 'dashboard' %}" class="text-center link-underline link-underline-opacity-0 ">
+                    <span class="d-block"><i class="bi bi-house-door"></i></span>
+                    <small>Dashboard</small>
+                </a>
+                <a href="{% url 'visitor_list' %}" class="text-center link-underline link-underline-opacity-0 ">
+                    <span class="d-block"><i class="bi bi-list-check"></i></span>
+                    <small>Entries</small>
+                </a>
+                <a href="{% url 'add_visitor' %}" class="text-center link-underline link-underline-opacity-0 ">
+                    <span class="d-block"><i class="bi bi-plus-circle"></i></span>
+                    <small>Add Entry</small>
+                </a>
+
+                <div class="dropup"> 
+                    <div class="text-center dropdown-toggle" id="moreDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="d-block"><i class="bi bi-list"></i></span>
+                        <small>More</small>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
+                        <li><a class="dropdown-item" href="{% url 'account_change_password' %}"><i class="bi bi-key"></i> Change Password</a></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    {% else %}
+        <div class="d-lg-none">
+            <h1 class="bg-white shadow-sm text-uppercase text-primary fs-3 fw-semibold p-3">Shyam Sanidhya</h1>
+            <div class="px-4 pt-3">
+                {% block resident_content %}{% endblock resident_content %}
+            </div>
+        </div>
+
+
+        <nav class="navbar fixed-bottom bg-white shadow-lg d-lg-none">
+        <div class="container d-flex justify-content-around py-2">
+            <a href="{% url 'dashboard' %}" class="text-center text-decoration-none text-dark">
+                <span class="d-block"><i class="bi bi-house-door"></i></span>
+                <small>Home</small>
+            </a>
+            <a href="{% url 'resident_event' %}" class="text-center text-decoration-none text-dark">
+                <span class="d-block"><i class="bi bi-calendar-event"></i></span>
+                <small>Events</small>
+            </a>
+            <a href="{% url 'my_bookings' %}" class="text-center text-decoration-none text-dark">
+                <span class="d-block"><i class="bi bi-building"></i></span>
+                <small>Book Facility</small>
+            </a>
+
+            <!-- More Dropdown (Opens Up) -->
+            <div class="dropup"> 
+                <div class="text-center dropdown-toggle" id="moreDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="d-block"><i class="bi bi-list"></i></span>
+                    <small>More</small>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
+                    <li><a class="dropdown-item" href="{% url 'resident_complaints' %}"><i class="bi bi-envelope-exclamation"></i> Complaint</a></li>
+                    <li><a class="dropdown-item" href="{% url 'account_change_password' %}"><i class="bi bi-key"></i> Change Password</a></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        </nav>
+
+    {% endif %}
+
+   
+    
+    <script src="{% static 'index.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block resident_content %}
+<div class="container py-4">
+    <h3 class="mb-3 text-primary"><i class="bi bi-tools"></i> Pay Maintenance Fee</h3>
+
+    <!-- Steps Guide -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white fw-bold">How to Pay?</div>
+        <div class="card-body">
+            <ol class="mb-0">
+                <li>Click on <strong>Pay Now</strong> to make a payment.</li>
+                <li>Take a screenshot of the transaction.</li>
+                <li>Upload the screenshot and enter transaction details below.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Payment Details -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white fw-bold">Payment Details</div>
+        <div class="card-body">
+            <p class="mb-2"><strong>Pay to:</strong> <span class="text-success">+91 XXXXXXXXXX</span></p>
+            <p class="mb-2"><strong>Maintenance Amount:</strong> ₹{{ maintenance.amount }}</p>
+
+            <a class="btn btn-success w-100 py-2" target="_blank"
+               href="upi://pay?pa=omk.rahi-1@oksbi&pn=Omkar&cu=INR&am={{maintenance.amount}}">
+                <i class="bi bi-credit-card"></i> Pay Now via UPI
+            </a>
+        </div>
+    </div>
+
+    <!-- Payment Proof Upload -->
+    <div class="card shadow-sm" style="margin-bottom:150px;">
+        <div class="card-header bg-warning text-white fw-bold">Upload Payment Proof</div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="form-label">Upload Payment Screenshot:</label>
+                <input type="file" name="payment_screenshot" class="form-control" required>
+                <button type="submit" class="btn btn-primary w-100 mt-3">Submit Payment Proof</button>
+            </form>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock resident_content %}

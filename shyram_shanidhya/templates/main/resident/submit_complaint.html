@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block resident_content %}
+<div class="container py-4">
+    <h3 class="mb-3"><i class="bi bi-exclamation-circle"></i> Submit a Complaint</h3>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+
+                <button type="submit" class="btn btn-danger w-100">
+                    <i class="bi bi-send"></i> Submit Complaint
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <a href="{% url 'resident_complaints' %}" class="btn btn-outline-secondary mt-3 w-100">
+        <i class="bi bi-arrow-left"></i> View My Complaints
+    </a>
+</div>
+{% endblock %}

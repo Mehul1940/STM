@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block resident_content %}
+<div class="container py-4">
+    <h3 class="mb-3"><i class="bi bi-calendar-plus"></i> Book a Facility</h3>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary w-100">Pay Now</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

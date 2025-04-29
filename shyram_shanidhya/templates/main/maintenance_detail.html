@@ -1,0 +1,45 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="fw-bold">Maintenance Payment Verification</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Resident:</strong> {{ maintenance.user.username }}</p>
+            <p><strong>Month:</strong> {{ maintenance.month }}</p>
+            <p><strong>Year:</strong> {{ maintenance.year }}</p>
+            <p><strong>Amount:</strong> ₹{{ maintenance.amount }}</p>
+            <p><strong>Created At:</strong> {{ maintenance.created_at }}</p>
+            <p><strong>Status:</strong> 
+                {% if maintenance.status == "verified" %}
+                    <span class="badge bg-success">Verified</span>
+                {% elif maintenance.status == "rejected" %}
+                    <span class="badge bg-danger">Rejected</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                {% endif %}
+            </p>
+
+            {% if maintenance.payment_proof %}
+                <p><strong>Payment Proof:</strong></p>
+                <img src="{{ maintenance.payment_proof.url }}" alt="Payment Screenshot" class="img-fluid rounded border" style="max-width: 400px;">
+            {% else %}
+                <p class="text-muted">No payment proof uploaded.</p>
+            {% endif %}
+
+            <hr>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Update Status</label>
+                    {{ form.status }}
+                </div>
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

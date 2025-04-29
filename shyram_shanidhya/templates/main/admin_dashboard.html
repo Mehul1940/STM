@@ -1,0 +1,49 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-4 border-0">
+                <i class="bi bi-people fs-1 text-primary"></i>
+                <h5 class="mt-2">Total Residents</h5>
+                <h3>{{ total_residents }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-4 border-0">
+                <i class="bi bi-person-badge fs-1 text-success"></i>
+                <h5 class="mt-2">Total Staff</h5>
+                <h3>{{ total_staff }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-4 border-0">
+                <i class="bi bi-exclamation-circle fs-1 text-danger"></i>
+                <h5 class="mt-2">Pending Maintenance</h5>
+                <h3>{{ pending_maintenance }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-4 border-0">
+                <i class="bi bi-calendar-event fs-1 text-warning"></i>
+                <h5 class="mt-2">Upcoming Events</h5>
+                <h3>{{ upcoming_events }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center p-4 border-0">
+                <i class="bi bi-person-check fs-1 text-primary"></i>
+                <h5 class="mt-2">Visitor Entries Today</h5>
+                <h3>{{ visitor_entries_today }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

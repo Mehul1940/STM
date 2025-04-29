@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block resident_content %}
+<div class="container mt-4">
+    <h3 class="mb-3 text-primary"><i class="bi bi-calendar-event"></i> Society Events</h3>
+
+    <div class="row" style="margin-bottom:150px;">
+        {% for event in events %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm border-0 rounded-3">
+                {% if event.image %}
+                <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.name }}">
+                {% else %}
+                <img src="https://via.placeholder.com/400x200?text=No+Image" class="card-img-top" alt="No Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="fw-bold">{{ event.name }}</h5>
+                    <p class="small text-muted"><i class="bi bi-calendar-check"></i> {{ event.event_date }}</p>
+                    <p class="text-secondary">{{ event.description|truncatewords:20 }}</p>
+                    <p class="fw-semibold text-success"><i class="bi bi-cash-stack"></i> ₹{{ event.total_fund_collected }} / ₹{{ event.total_fund_needed }}</p>
+                    <p class="text-danger small">Remaining: ₹{{ event.fund_remaining }}</p>
+                    <a href="{% url 'resident_event_detail' event.id %}" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-eye"></i> View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">No events available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

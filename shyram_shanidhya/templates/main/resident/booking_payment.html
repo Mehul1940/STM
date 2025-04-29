@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+{% block resident_content %}
+<div class="container py-4">
+    <h3 class="mb-3"><i class="bi bi-credit-card"></i> Facility Payment</h3>
+
+    <!-- Steps Guide -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">How to Book a Facility?</div>
+        <div class="card-body">
+            <ol>
+                <li>Click on <strong>Proceed to Payment</strong> to view payment details.</li>
+                <li>Make the payment using the provided UPI ID.</li>
+                <li>Take a screenshot of the transaction.</li>
+                <li>Upload the payment screenshot and confirm your booking.</li>
+                <li>Wait for admin approval. You will be notified once your booking is verified.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">Payment Details</div>
+        <div class="card-body">
+            <p><strong>Facility:</strong> <span class="text-success">{{ booking.facility.name }}</span></p>
+            <p><strong>Booking Date:</strong> {{ booking.start_date }} to {{ booking.end_date }}</p>
+            <p><strong>Total Amount:</strong> ₹{{ booking.total_price }}</p>
+            <p><strong>Pay to:</strong> <span class="text-success">+91 XXXXXXXXXX</span></p>
+
+            <a class="btn btn-success w-100" target="_blank"
+            href="upi://pay?pa=omk.rahi-1@oksbi&pn=Omkar&cu=INR&am={{booking.total_price}}">
+                <i class="bi bi-credit-card"></i> Pay Now via Google Pay
+            </a>
+        </div>
+    </div>
+
+
+    <div class="card shadow-sm" style="margin-bottom:150px">
+        <div class="card-body">
+            <p><strong>Facility:</strong> {{ booking.facility.name }}</p>
+            <p><strong>Total Price:</strong> ₹{{ booking.total_price }}</p>
+            <p><strong>Pay via UPI:</strong> <span class="text-primary">{{ upi_id }}</span></p>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="form-label">Upload Payment Screenshot:</label>
+                <input type="file" name="payment_screenshot" class="form-control" required>
+                <button type="submit" class="btn btn-primary w-100 mt-3">Submit Payment Proof</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

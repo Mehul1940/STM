@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    
+    <div class="card shadow-sm p-3 px-5">
+        <h3 class="text-primary my-3"><i class="bi bi-cash-stack"></i> Contribution Details</h3>
+        <p><strong>Contributor:</strong> {{ contribution.user.username }}</p>
+        <p><strong>Event:</strong> {{ contribution.event.name }}</p>
+        <p><strong>Amount:</strong> ₹{{ contribution.amount }}</p>
+        <p><strong>Transaction ID:</strong> {{ contribution.transaction_id }}</p>
+        <p><strong>Status:</strong> <span class="badge bg-{% if contribution.status == 'verified' %}success{% elif contribution.status == 'rejected' %}danger{% else %}warning{% endif %}">{{ contribution.get_status_display }}</span></p>
+        <p><strong>Contributed At:</strong> {{ contribution.contributed_at }}</p>
+
+        {% if contribution.screenshot %}
+        <div>
+            <strong>Payment Proof:</strong><br>
+            <img src="{{ contribution.screenshot.url }}" alt="Payment Screenshot" class="img-fluid" style="max-width: 400px;">
+        </div>
+        {% endif %}
+
+        <form method="POST" class="mt-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Update Status</button>
+    </form>
+    </div>
+
+
+
+</div>
+
+{% endblock %}
